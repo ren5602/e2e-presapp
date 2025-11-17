@@ -35,10 +35,10 @@ export default defineConfig({
     // },
   ],
 
-  webServer: {
+  webServer: process.env.CI ? undefined : {
     command: 'php artisan serve',
     url: 'http://localhost:8000',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
     timeout: 120 * 1000,
   },
 });

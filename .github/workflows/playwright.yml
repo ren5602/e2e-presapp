@@ -94,18 +94,26 @@ jobs:
           DB_DATABASE: e2e_presapp_test
           DB_USERNAME: root
           DB_PASSWORD: root
-        run: php artisan serve &
+        run: |
+          php artisan serve --host=0.0.0.0 --port=8000 > /tmp/server.log 2>&1 &
+          sleep 5
+          
+      - name: Check server logs
+        run: cat /tmp/server.log || echo "No log file"
         
       - name: Wait for server to be ready
         run: |
-          for i in {1..30}; do
-            if curl -f http://localhost:8000; then
+          for i in {1..60}; do
+            if curl -s http://localhost:8000 > /dev/null; then
               echo "Server is ready"
-              break
+              exit 0
             fi
-            echo "Waiting for server... attempt $i/30"
+            echo "Waiting for server... attempt $i/60"
             sleep 1
           done
+          echo "Server failed to start"
+          cat /tmp/server.log
+          exit 1
       
       - name: Run Playwright tests
         env:
