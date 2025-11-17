@@ -17,13 +17,12 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'on',
     video: 'on',
-    headless: false,
   },
 
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'], headless: true},
     },
     // {
     //   name: 'firefox',
@@ -35,10 +34,9 @@ export default defineConfig({
     // },
   ],
 
-  webServer: process.env.CI ? undefined : {
-    command: 'php artisan serve',
+  webServer: !process.env.CI ? {
+    command: 'npm run dev',
     url: 'http://localhost:8000',
     reuseExistingServer: true,
-    timeout: 120 * 1000,
-  },
+  } : undefined,
 });
