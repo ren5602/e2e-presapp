@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Public routes (tanpa autentikasi)
+Route::post('/auth/login', [AuthApiController::class, 'login']);
+
+// Protected routes (membutuhkan token)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [AuthApiController::class, 'getUser']);
+    Route::post('/auth/logout', [AuthApiController::class, 'logout']);
+    Route::post('/auth/logout-current', [AuthApiController::class, 'logoutCurrent']);
 });
