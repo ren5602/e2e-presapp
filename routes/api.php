@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthApiController;
+use App\Http\Controllers\Api\MahasiswaApiPrestasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthApiController::class, 'getUser']);
     Route::post('/auth/logout', [AuthApiController::class, 'logout']);
     Route::post('/auth/logout-current', [AuthApiController::class, 'logoutCurrent']);
+
+    // Prestasi API routes
+    Route::get('/prestasi', [MahasiswaApiPrestasiController::class, 'index']);
+    Route::post('/prestasi', [MahasiswaApiPrestasiController::class, 'store']);
+    Route::get('/prestasi/{prestasiId}', [MahasiswaApiPrestasiController::class, 'show']);
 });
