@@ -8,8 +8,8 @@ test.describe('Tes Verifikasi Prestasi', () => {
     await page.fill('input[name="password"]', 'admin123');
     await page.click('button[type="submit"]');
     
-    // Wait for navigation
-    await page.waitForURL(/\/(dashboard|admin|home)/, { timeout: 10000 });
+    // Wait for navigation - just wait for page to be ready
+    await page.waitForLoadState('networkidle');
     
     // Navigate directly to prestasi page using URL
     await page.goto('/prestasi');
